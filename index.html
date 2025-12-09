@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="Guia Corporativo - Método VECTO. Um playbook de transformação operacional por Silvanio Gois.">
+<title>Guia Corporativo 2.0 – Método VECTO | Silvanio Gois</title>
+<style>
+/* --- CSS Reset & Variables --- */
+:root {
+  --primary: #1a4a70; /* Azul Executivo Profundo */
+  --secondary: #2c8bc2; /* Azul Ação */
+  --accent: #f0ad4e; /* Destaque sutil */
+  --text-main: #1f2937;
+  --text-light: #6b7280;
+  --bg-body: #f3f4f6;
+  --bg-card: #ffffff;
+  --border: #e5e7eb;
+  --success: #10b981;
+  --radius: 8px;
+  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Segoe UI', Inter, system-ui, sans-serif;
+  background: var(--bg-body);
+  color: var(--text-main);
+  line-height: 1.6;
+  font-size: 16px;
+  padding-bottom: 60px;
+}
+
+/* --- Layout Grid --- */
+.main-wrapper {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  max-width: 1200px;
+  margin: 0 auto;
+  gap: 30px;
+  padding: 20px;
+}
+
+/* --- Header --- */
+header {
+  background: linear-gradient(135deg, var(--primary) 0%, #162f42 100%);
+  color: white;
+  padding: 40px 0;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  margin-bottom: 20px;
+  position: relative;
+}
+.header-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+.foto-perfil {
+  width: 130px;
+  height: 130px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 4px solid rgba(255,255,255,0.2);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+}
+.header-content h1 { font-size: 2.2rem; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.5px; }
+.header-content .subtitle { font-size: 1.1rem; opacity: 0.9; font-weight: 300; margin-bottom: 16px; }
+.badge { background: rgba(255,255,255,0.15); padding: 4px 10px; border-radius: 4px; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; }
+
+.cta-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #25D366;
+  color: white;
+  text-decoration: none;
+  padding: 10px 20px;
+  border-radius: 50px;
+  font-weight: 600;
+  transition: transform 0.2s;
+  box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+}
+.cta-button:hover { transform: translateY(-2px); filter: brightness(1.05); }
+
+/* --- Sidebar Navigation --- */
+.sidebar {
+  position: sticky;
+  top: 20px;
+  height: fit-content;
+  background: var(--bg-card);
+  padding: 20px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+}
+.nav-menu { list-style: none; }
+.nav-menu li { margin-bottom: 2px; }
+.nav-menu a {
+  display: block;
+  padding: 8px 12px;
+  color: var(--text-light);
+  text-decoration: none;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+.nav-menu a:hover, .nav-menu a.active {
+  background: #eef6fc;
+  color: var(--primary);
+  font-weight: 600;
+  border-left: 3px solid var(--secondary);
+}
+
+/* --- Mobile Menu Button --- */
+.mobile-menu-toggle {
+  display: none;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  padding: 10px 12px;
+  cursor: pointer;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 1001;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 44px;
+  height: 44px;
+}
+
+.mobile-menu-toggle span {
+  display: block;
+  height: 3px;
+  width: 100%;
+  background: white;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+.mobile-menu-toggle.active span:nth-child(1) {
+  transform: translateY(10px) rotate(45deg);
+}
+
+.mobile-menu-toggle.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.mobile-menu-toggle.active span:nth-child(3) {
+  transform: translateY(-10px) rotate(-45deg);
+}
+
+/* --- Mobile Menu Overlay --- */
+.mobile-menu-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.9);
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+}
+
+.mobile-menu-container {
+  background: var(--bg-card);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 85%;
+  height: 100%;
+  padding: 40px 20px;
+  overflow-y: auto;
+  transform: translateX(-100%);
+  transition: transform 0.3s ease;
+  box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+}
+
+.mobile-menu-overlay.active .mobile-menu-container {
+  transform: translateX(0);
+}
+
+.mobile-menu-container h3 {
+  color: var(--primary);
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-menu-mobile {
+  list-style: none;
+}
+
+.nav-menu-mobile li {
+  margin-bottom: 8px;
+}
+
+.nav-menu-mobile a {
+  display: block;
+  padding: 12px 16px;
+  color: var(--text-main);
+  text-decoration: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: all 0.2s;
+  border-left: 3px solid transparent;
+}
+
+.nav-menu-mobile a:hover,
+.nav-menu-mobile a.active {
+  background: #eef6fc;
+  color: var(--primary);
+  font-weight: 600;
+  border-left: 3px solid var(--secondary);
+}
+
+.mobile-menu-close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 28px;
+  color: var(--text-light);
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.mobile-menu-close:hover {
+  background: #f3f4f6;
+}
+
+/* --- Content Content --- */
+h2 {
+  color: var(--primary);
+  font-size: 1.8rem;
+  margin-top: 40px;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #e5e7eb;
+  padding-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.vecto-badge {
+  background: var(--primary);
+  color: white;
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+h3 { color: var(--text-main); font-size: 1.3rem; margin: 25px 0 12px 0; font-weight: 600; }
+
+.card {
+  background: var(--bg-card);
+  padding: 24px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  margin-bottom: 24px;
+}
+
+.highlight-box {
+  background: #f8fafc;
+  border-left: 4px solid var(--secondary);
+  padding: 16px;
+  margin: 16px 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+}
+
+/* --- Tables & Grids --- */
+table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 0.95rem; }
+th { background: var(--primary); color: white; padding: 12px; text-align: left; }
+td { border-bottom: 1px solid var(--border); padding: 12px; }
+tr:nth-child(even) { background: #f9fafb; }
+
+.kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; }
+.kpi-box {
+  background: white; border: 1px solid var(--border); padding: 16px; border-radius: var(--radius);
+  text-align: center; border-top: 4px solid var(--success);
+}
+.kpi-value { display: block; font-size: 1.5rem; font-weight: bold; color: var(--text-main); margin-top: 8px; }
+.kpi-label { font-size: 0.85rem; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.5px; }
+
+/* --- Footer & UI --- */
+.footer { text-align: center; color: var(--text-light); font-size: 0.9rem; padding: 40px; border-top: 1px solid var(--border); margin-top: 40px; }
+#backToTop {
+  position: fixed; bottom: 30px; right: 30px;
+  background: var(--primary); color: white; border: none;
+  width: 50px; height: 50px; border-radius: 50%;
+  font-size: 24px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  display: none; transition: opacity 0.3s;
+  z-index: 999;
+}
+
+/* --- Print Styles --- */
+@media print {
+  .sidebar, #backToTop, .cta-button, .mobile-menu-toggle { display: none; }
+  .main-wrapper { display: block; padding: 0; }
+  header { padding: 20px 0; background: white; color: black; border-bottom: 2px solid black; }
+  .foto-perfil { border: 1px solid #ccc; box-shadow: none; }
+  h2 { break-before: auto; }
+  body { font-size: 12pt; background: white; }
+  .card { box-shadow: none; border: 1px solid #ddd; page-break-inside: avoid; }
+}
+
+/* --- Mobile --- */
+@media (max-width: 850px) {
+  .main-wrapper {
+    grid-template-columns: 1fr;
+    padding: 10px;
+  }
+  
+  .sidebar {
+    display: none;
+  }
+  
+  .header-container {
+    flex-direction: column;
+    text-align: center;
+    padding: 20px;
+  }
+  
+  .foto-perfil {
+    margin-bottom: 16px;
+    width: 100px;
+    height: 100px;
+  }
+  
+  .header-content h1 {
+    font-size: 1.8rem;
+  }
+  
+  .mobile-menu-toggle {
+    display: flex;
+  }
+  
+  .mobile-menu-overlay {
+    display: block;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+  }
+  
+  .mobile-menu-overlay.active {
+    opacity: 1;
+    visibility: visible;
+  }
+  
+  #backToTop {
+    bottom: 80px;
+    right: 20px;
+    width: 45px;
+    height: 45px;
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .header-content h1 {
+    font-size: 1.5rem;
+  }
+  
+  .header-content .subtitle {
+    font-size: 1rem;
+  }
+  
+  .card {
+    padding: 16px;
+  }
+  
+  h2 {
+    font-size: 1.5rem;
+  }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-container">
+    <img src="Executivo_Silvanio_Gestor.PNG" alt="Silvanio Gois" class="foto-perfil">
+    <div class="header-content">
+      <span class="badge">Playbook Executivo</span>
+      <h1>Guia Corporativo 2.0 – Método VECTO</h1>
+      <p class="subtitle">Visão &bull; Estruturação &bull; Convergência &bull; Transformação &bull; Operacionalização</p>
+      <a href="https://wa.me/5513988301094" target="_blank" class="cta-button">
+        <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.664-.698c.969.585 1.961.893 2.796.893 3.183 0 5.768-2.585 5.769-5.766.001-3.181-2.584-5.768-5.769-5.78zM12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2Z"></path></svg>
+        Falar com Silvanio Gois
+      </a>
+    </div>
+    
+    <!-- Botão do menu móvel -->
+    <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Abrir menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </div>
+</header>
+
+<!-- Overlay do menu móvel -->
+<div class="mobile-menu-overlay" id="mobileMenuOverlay">
+  <div class="mobile-menu-container">
+    <button class="mobile-menu-close" id="mobileMenuClose" aria-label="Fechar menu">×</button>
+    <h3>Navegação</h3>
+    <ul class="nav-menu-mobile">
+      <li><a href="#sumario">Sumário Executivo</a></li>
+      <li><a href="#metodo">O Método VECTO</a></li>
+      <li><a href="#etapa0">0. Visão (Imersão)</a></li>
+      <li><a href="#etapa1">1. Estruturação (Diagnóstico)</a></li>
+      <li><a href="#etapa2">2. Convergência (Análise)</a></li>
+      <li><a href="#etapa3">3. Transformação (TO-BE)</a></li>
+      <li><a href="#etapa4">4. Operacionalização (Gov)</a></li>
+      <li><a href="#benchmarks">Benchmarks & KPIs</a></li>
+      <li><a href="#roadmap">Roadmap 90 Dias</a></li>
+      <li><a href="#blindagem">Blindagem do Projeto</a></li>
+      <li><a href="#templates">Templates Úteis</a></li>
+    </ul>
+  </div>
+</div>
+
+<div class="main-wrapper">
+  <aside class="sidebar">
+    <h3>Navegação</h3>
+    <ul class="nav-menu">
+      <li><a href="#sumario">Sumário Executivo</a></li>
+      <li><a href="#metodo">O Método VECTO</a></li>
+      <li><a href="#etapa0">0. Visão (Imersão)</a></li>
+      <li><a href="#etapa1">1. Estruturação (Diagnóstico)</a></li>
+      <li><a href="#etapa2">2. Convergência (Análise)</a></li>
+      <li><a href="#etapa3">3. Transformação (TO-BE)</a></li>
+      <li><a href="#etapa4">4. Operacionalização (Gov)</a></li>
+      <li><a href="#benchmarks">Benchmarks & KPIs</a></li>
+      <li><a href="#roadmap">Roadmap 90 Dias</a></li>
+      <li><a href="#blindagem">Blindagem do Projeto</a></li>
+      <li><a href="#templates">Templates Úteis</a></li>
+    </ul>
+  </aside>
+
+  <main>
+    <section id="sumario" class="card">
+      <h2>Sumário Executivo</h2>
+      <p><strong>Objetivo:</strong> Fornecer um roadmap tático para diagnóstico, reestruturação e controle de processos corporativos em 90 dias.</p>
+      <p><strong>A Promessa VECTO:</strong> Sair do caos operacional para uma gestão baseada em dados, com redução de desperdício e clareza de papéis.</p>
+      
+      <div class="highlight-box">
+        <strong>Para quem é este guia:</strong> Diretores, Head of Operations, Gerentes de Projetos e Consultores que precisam entregar resultados rápidos e sustentáveis.
+      </div>
+
+      <h3>Como utilizar:</h3>
+      <ol style="margin-left:20px; margin-bottom:15px">
+        <li>Execute as etapas sequencialmente (não pule a Etapa 0).</li>
+        <li>Utilize os <strong>Gates de Aprovação</strong> para mitigar riscos políticos.</li>
+        <li>Adapte os Scripts de entrevista à cultura da empresa.</li>
+      </ol>
+    </section>
+
+    <section id="metodo" class="card">
+      <h2>O Framework VECTO</h2>
+      <p>Uma abordagem que une a rigidez necessária da auditoria com a agilidade do Lean Six Sigma.</p>
+      
+      <table class="table">
+        <thead><tr><th>Sigla</th><th>Fase</th><th>Foco Principal</th><th>Resultado Chave</th></tr></thead>
+        <tbody>
+          <tr><td><strong>V</strong></td><td>Visão (Etapa 0)</td><td>Alinhamento Estratégico</td><td>Matriz de Riscos</td></tr>
+          <tr><td><strong>E</strong></td><td>Estruturação (Etapa 1)</td><td>Mapeamento AS-IS</td><td>Diagnóstico Técnico</td></tr>
+          <tr><td><strong>C</strong></td><td>Convergência (Etapa 2)</td><td>Priorização & Decisão</td><td>Plano de Ação</td></tr>
+          <tr><td><strong>T</strong></td><td>Transformação (Etapa 3)</td><td>Execução & Pilotos</td><td>Processo TO-BE</td></tr>
+          <tr><td><strong>O</strong></td><td>Operacionalização (Etapa 4)</td><td>Governança & Controle</td><td>Pack de Gestão</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="etapa0" class="card">
+      <h2><span class="vecto-badge">V</span> Etapa 0: Visão (Imersão)</h2>
+      <p>Antes de mover uma peça, entenda o tabuleiro. O erro nº 1 é tentar mudar processos sem entender a cultura e as relações de poder.</p>
+      
+      <h3>Ações Críticas</h3>
+      <ul>
+        <li><strong>Kickoff com Sponsor:</strong> Defina o que é "sucesso" para ele(a). Pergunte: <em>"O que faria este projeto ser cancelado?"</em></li>
+        <li><strong>Mapeamento de Stakeholders:</strong> Quem apoia? Quem detrata? Quem é neutro?</li>
+        <li><strong>Gemba Walk (Observação):</strong> Passe 1 dia apenas observando a operação sem interferir.</li>
+      </ul>
+
+      <div class="highlight-box">
+        <strong>Deliverable (Saída):</strong> Carta de Projeto (Project Charter) + Matriz de Riscos Políticos assinada pelo Sponsor.
+      </div>
+    </section>
+
+    <section id="etapa1" class="card">
+      <h2><span class="vecto-badge">E</span> Etapa 1: Estruturação (Diagnóstico)</h2>
+      <p>Mapeamento da realidade atual (AS-IS). Não documente como deveria ser, documente <strong>como é</strong>, com todos os seus defeitos.</p>
+      
+      <h3>O que coletar (Checklist):</h3>
+      <ul style="list-style: none;">
+        <li>✅ Fluxograma atual (Nível macro SIPOC e detalhado BPMN)</li>
+        <li>✅ Volumetria (Quantos tickets/pedidos por dia?)</li>
+        <li>✅ FTEs (Quantas pessoas dedicadas em horas?)</li>
+        <li>✅ Sistemas utilizados (E onde ocorrem as integrações manuais/Excel)</li>
+      </ul>
+
+      <h3>Técnica "Follow the Artifact"</h3>
+      <p>Siga um documento ou pedido do início ao fim. Anote cada "parada" (fila) e cada "volta" (retrabalho).</p>
+    </section>
+
+    <section id="etapa2" class="card">
+      <h2><span class="vecto-badge">C</span> Etapa 2: Convergência (Análise)</h2>
+      <p>Transformar dados em decisão. É o momento de separar o "ruído" dos problemas reais que afetam o P&L (Lucros e Perdas).</p>
+      
+      <h3>Matriz de Priorização (Impacto x Esforço)</h3>
+      <p>Classifique as dores encontradas:</p>
+      <div class="kpi-grid">
+        <div class="kpi-box" style="border-top-color:var(--success)">
+          <span class="kpi-label">Prioridade 1</span>
+          <span class="kpi-value" style="font-size:1.1rem">Quick Wins</span>
+          <p style="font-size:0.8rem; margin-top:5px">Alto Impacto / Baixo Esforço. Implemente já.</p>
+        </div>
+        <div class="kpi-box" style="border-top-color:var(--secondary)">
+          <span class="kpi-label">Prioridade 2</span>
+          <span class="kpi-value" style="font-size:1.1rem">Projetos</span>
+          <p style="font-size:0.8rem; margin-top:5px">Alto Impacto / Alto Esforço. Planeje.</p>
+        </div>
+        <div class="kpi-box" style="border-top-color:#ccc">
+          <span class="kpi-label">Ignorar</span>
+          <span class="kpi-value" style="font-size:1.1rem">Distrações</span>
+          <p style="font-size:0.8rem; margin-top:5px">Baixo Impacto. Não gaste energia.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="etapa3" class="card">
+      <h2><span class="vecto-badge">T</span> Etapa 3: Transformação (TO-BE)</h2>
+      <p>Desenho e implantação do novo processo. Aqui aplicamos automação, eliminação de desperdícios e novos padrões.</p>
+      
+      <h3>Os 3 Pilares da Transformação VECTO:</h3>
+      <ol>
+        <li><strong>Simplificação:</strong> Remover aprovações redundantes.</li>
+        <li><strong>Padronização:</strong> Criar SOPs (Procedimento Operacional Padrão) visuais.</li>
+        <li><strong>Automação:</strong> Usar tecnologia (RPA, IA, Scripts) para tarefas repetitivas.</li>
+      </ol>
+
+      <div class="highlight-box">
+        <strong>Atenção à Gestão de Mudança:</strong> Comunique o "porquê" antes do "como". Treine a equipe <em>antes</em> do Go-Live.
+      </div>
+    </section>
+
+    <section id="etapa4" class="card">
+      <h2><span class="vecto-badge">O</span> Etapa 4: Operacionalização (Governança)</h2>
+      <p>Um projeto sem governança morre em 3 meses. A operacionalização garante a perenidade das melhorias.</p>
+      
+      <h3>O "Governança Pack":</h3>
+      <ul>
+        <li><strong>Ritual de Gestão:</strong> Reunião semanal de 30min para revisão de KPIs.</li>
+        <li><strong>Dono do Processo (Process Owner):</strong> Um CPF responsável pelo resultado final.</li>
+        <li><strong>Auditoria Trimestral:</strong> Checklist para garantir que ninguém voltou aos velhos hábitos.</li>
+      </ul>
+    </section>
+
+    <section id="benchmarks" class="card">
+      <h2>Benchmarks & KPIs de Mercado</h2>
+      <p>Use estes dados reais para balizar suas metas e business cases.</p>
+      
+      <h3>Referências de Mercado (Indústria de Serviços/Backoffice)</h3>
+      <table class="table">
+        <thead><tr><th>Indicador</th><th>Média de Mercado</th><th>Meta Excelência (VECTO)</th></tr></thead>
+        <tbody>
+          <tr><td>Redução de Lead Time (após revisão)</td><td>10-15%</td><td><strong>30-40%</strong></td></tr>
+          <tr><td>Ganho de Produtividade</td><td>5-10%</td><td><strong>20-25%</strong></td></tr>
+          <tr><td>Taxa de Retrabalho (First Time Right)</td><td>85%</td><td><strong>>95%</strong></td></tr>
+        </tbody>
+      </table>
+
+      <h3>Fórmulas Essenciais</h3>
+      <div style="display:grid; gap:10px;">
+        <div class="template-box code">
+          <strong>Produtividade =</strong> (Total Output Produzido) / (Total Horas Trabalhadas)
+        </div>
+        <div class="template-box code">
+          <strong>FTE Real =</strong> (Volume Mensal × Tempo Médio por Item em min) / (168h × 60)
+          <br><small>Considerando mês comercial padrão. Útil para dimensionar equipes.</small>
+        </div>
+      </div>
+    </section>
+
+    <section id="roadmap" class="card">
+      <h2>Roadmap Executivo (90 Dias)</h2>
+      <div class="kpi-grid" style="grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));">
+        <div style="text-align:center; padding:10px; border:1px solid #ddd; border-radius:8px;">
+          <strong>D1-D15</strong><br><span style="color:var(--primary)">Visão</span>
+        </div>
+        <div style="text-align:center; padding:10px; border:1px solid #ddd; border-radius:8px;">
+          <strong>D16-D40</strong><br><span style="color:var(--primary)">Estruturação</span>
+        </div>
+        <div style="text-align:center; padding:10px; border:1px solid #ddd; border-radius:8px;">
+          <strong>D41-D50</strong><br><span style="color:var(--primary)">Convergência</span>
+        </div>
+        <div style="text-align:center; padding:10px; border:1px solid #ddd; border-radius:8px;">
+          <strong>D51-D80</strong><br><span style="color:var(--primary)">Transformação</span>
+        </div>
+        <div style="text-align:center; padding:10px; border:1px solid #ddd; border-radius:8px; background:var(--primary); color:white">
+          <strong>D81-D90</strong><br>Governança
+        </div>
+      </div>
+    </section>
+    
+    <section id="blindagem" class="card" style="border-left: 5px solid var(--accent);">
+      <h2><span class="vecto-badge" style="background:var(--accent)">!</span> Blindagem do Projeto (Segurança)</h2>
+      <p>Para garantir a segurança do sponsor e do consultor, estes 3 protocolos são obrigatórios antes do início.</p>
+
+      <h3>1. Matriz de Comunicação (Evitando a "Rádio Peão")</h3>
+      <table class="table">
+        <thead><tr><th>Público</th><th>Mensagem Chave</th><th>Canal</th><th>Frequência</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Sponsors/Diretoria</strong></td><td>Status, Riscos e Bloqueios</td><td>Reunião 1:1 + E-mail</td><td>Semanal</td></tr>
+          <tr><td><strong>Gerentes Médios</strong></td><td>Impacto na rotina e Recursos</td><td>Reunião de Equipe</td><td>Quinzenal</td></tr>
+          <tr><td><strong>Operação (Chão de fábrica)</strong></td><td>"O que muda para mim?" (WIIFM)</td><td>Café / Townhall / Mural</td><td>Mensal + Marcos</td></tr>
+          <tr><td><strong>Empresa Toda</strong></td><td>Celebrar vitórias (Quick Wins)</td><td>Intranet / Newsletter</td><td>A cada entrega</td></tr>
+        </tbody>
+      </table>
+
+      <h3>2. Critérios de "Kill Switch" (Pausa de Emergência)</h3>
+      <div class="highlight-box" style="background: #fff5f5; border-left-color: #e53e3e;">
+        <p><strong>O projeto deve ser pausado imediatamente se:</strong></p>
+        <ul style="margin-left: 20px; margin-top: 10px;">
+          <li>O Sponsor sair da empresa ou perder poder de decisão.</li>
+          <li>A equipe operacional boicotar ativamente a coleta de dados (Greve branca).</li>
+          <li>O orçamento for cortado em mais de 30% antes da fase de Automação.</li>
+        </ul>
+        <small style="display:block; margin-top:10px; color:#c53030;">*Ter isso escrito protege o consultor de ser culpado por falhas estruturais.*</small>
+      </div>
+
+      <h3>3. Compliance & IA (LGPD)</h3>
+      <p>Na etapa de <strong>Automação</strong>, é vetado o uso de dados pessoais de clientes (CPF, Salário, Saúde) em ferramentas de IA públicas (ex: ChatGPT gratuito) ou automações sem criptografia. O Jurídico deve ser consultado.</p>
+    </section>
+    <section id="templates" class="card">
+      <h2>Templates & Ferramentas</h2>
+      
+      <h3>Modelo de Business Case (ROI)</h3>
+      <div class="highlight-box" style="border-left-color: var(--success); background:#f0fdf4;">
+        <p><strong>Cenário:</strong> Automação de Entrada de Notas Fiscais</p>
+        <p><strong>Custo Atual (AS-IS):</strong> 2 Analistas (R$ 10k/mês) gastam 4h/dia = R$ 60.000/ano desperdiçados.</p>
+        <p><strong>Investimento (Projeto):</strong> R$ 15.000 (Consultoria + Software).</p>
+        <p><strong>Retorno (TO-BE):</strong> Tempo cai para 10min/dia. Economia de R$ 55.000/ano.</p>
+        <p><strong>Payback:</strong> 3.5 meses.</p>
+      </div>
+
+      <h3>Matriz RACI (Responsabilidades)</h3>
+      <table class="table">
+        <tr><th>Atividade</th><th>Analista</th><th>Gerente</th><th>Diretor</th></tr>
+        <tr><td>Mapear Processo</td><td><strong>R</strong> (Faz)</td><td><strong>I</strong> (Informado)</td><td><strong>I</strong></td></tr>
+        <tr><td>Validar Novo Fluxo</td><td><strong>C</strong> (Consultado)</td><td><strong>R</strong> (Faz)</td><td><strong>A</strong> (Aprova)</td></tr>
+        <tr><td>Auditar KPI</td><td><strong>R</strong></td><td><strong>A</strong></td><td><strong>I</strong></td></tr>
+      </table>
+    </section>
+
+  </main>
+</div>
+
+<footer class="footer">
+  <p>© 2025 Silvanio Gois. Método VECTO. Todos os direitos reservados.</p>
+  <p>Gestão Estratégica | <a href="https://www.silvaniogois.com.br/" target="_blank" rel="noopener" style="color:var(--text-light); text-decoration:none">Site</a></p>
+</footer>
+
+<button id="backToTop" onclick="window.scrollTo({top: 0, behavior: 'smooth'});">↑</button>
+
+<script>
+// Menu móvel
+const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
+const mobileMenuClose = document.getElementById('mobileMenuClose');
+const mobileMenuLinks = document.querySelectorAll('.nav-menu-mobile a');
+
+// Abrir menu
+mobileMenuToggle.addEventListener('click', () => {
+  mobileMenuOverlay.classList.add('active');
+  mobileMenuToggle.classList.add('active');
+});
+
+// Fechar menu
+function closeMobileMenu() {
+  mobileMenuOverlay.classList.remove('active');
+  mobileMenuToggle.classList.remove('active');
+}
+
+mobileMenuClose.addEventListener('click', closeMobileMenu);
+
+// Fechar ao clicar em um link
+mobileMenuLinks.forEach(link => {
+  link.addEventListener('click', closeMobileMenu);
+});
+
+// Fechar ao clicar fora do menu (no overlay)
+mobileMenuOverlay.addEventListener('click', (e) => {
+  if (e.target === mobileMenuOverlay) {
+    closeMobileMenu();
+  }
+});
+
+// Lógica para o botão voltar ao topo
+window.onscroll = function() {
+  var btn = document.getElementById("backToTop");
+  if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+    btn.style.display = "block";
+    setTimeout(() => btn.style.opacity = "1", 10);
+  } else {
+    btn.style.opacity = "0";
+    setTimeout(() => btn.style.display = "none", 300);
+  }
+};
+
+// Highlight menu item on scroll
+const sections = document.querySelectorAll("section");
+const navLi = document.querySelectorAll(".nav-menu a");
+const navMobileLi = document.querySelectorAll(".nav-menu-mobile a");
+
+function highlightMenu() {
+  let current = "";
+  sections.forEach((section) => {
+    const sectionTop = section.offsetTop;
+    if (scrollY >= sectionTop - 100) {
+      current = section.getAttribute("id");
+    }
+  });
+
+  navLi.forEach((a) => {
+    a.classList.remove("active");
+    if (a.getAttribute("href").includes(current)) {
+      a.classList.add("active");
+    }
+  });
+
+  navMobileLi.forEach((a) => {
+    a.classList.remove("active");
+    if (a.getAttribute("href").includes(current)) {
+      a.classList.add("active");
+    }
+  });
+}
+
+window.addEventListener("scroll", highlightMenu);
+</script>
+
+</body>
+</html>
